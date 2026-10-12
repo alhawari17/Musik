@@ -16,10 +16,11 @@
     --navy-dark:#2E3A82;
     --lav:#B7A6F2;
     --mint:#8FE0CE;
+    --yellow:#F6E96B;
     --card:#FFFFFF;
     --line:#E7E0D2;
     --muted:#8B8577;
-    --shadow: 0 2px 0 rgba(25,25,25,0.08);
+    --shadow: 0 3px 0 rgba(25,25,25,0.9);
     --radius: 20px;
   }
   *{box-sizing:border-box;}
@@ -80,6 +81,89 @@
     margin:18px 0 8px;text-transform:none;
   }
 
+  /* ---------- Category Cards (Scroll Horizontal Ke Samping) ---------- */
+  .category-grid{
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    padding-top: 6px;
+    margin-bottom: 18px;
+    margin-left: -18px;
+    margin-right: -18px;
+    padding-left: 18px;
+    padding-right: 18px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .category-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .cat-card{
+    width: 200px;
+    flex-shrink: 0;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-radius: 16px;
+    overflow: visible; 
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.15s ease;
+  }
+  .cat-card:active{
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 rgba(25,25,25,0.9);
+  }
+  .cat-card.active{
+    border-color: var(--orange);
+    background: #FFFDF7;
+  }
+  .cat-banner{
+    height: 75px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #fff;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+  }
+  .cat-badge{
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    background: var(--yellow);
+    border: 1.5px solid var(--ink);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 8px;
+    transform: rotate(-6deg);
+    text-transform: uppercase;
+    z-index: 2;
+    box-shadow: 0 2px 0 rgba(25,25,25,0.15);
+  }
+  .cat-info{
+    padding: 10px 12px;
+  }
+  .cat-title{
+    font-size: 13.5px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cat-sub{
+    font-size: 10.5px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
   /* ---------- Now playing hero card (Home) ---------- */
   .player-card{
     background:var(--card);border:1.5px solid var(--ink);
@@ -91,6 +175,7 @@
     width:96px;height:96px;border-radius:14px;object-fit:cover;
     background:linear-gradient(160deg,var(--navy),#20265e);
     flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;
   }
   .np-tag{
     position:absolute;top:-10px;left:10px;
@@ -152,7 +237,6 @@
   .row-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
   .row-time{font-size:11px;color:var(--muted);}
   .icon-btn{background:none;border:none;cursor:pointer;color:var(--ink);display:flex;padding:2px;}
-  .star.on{color:var(--orange);}
   .empty-hint{
     text-align:center;color:var(--muted);font-size:13px;padding:26px 10px;
     border:1.5px dashed var(--line);border-radius:14px;
@@ -179,28 +263,6 @@
     width:100%;border:1.5px dashed var(--ink);background:none;border-radius:14px;
     padding:12px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--ink);
     margin-top:6px;
-  }
-
-  /* ---------- Add song form ---------- */
-  .form-card{
-    background:var(--card);border:1.3px solid var(--ink);border-radius:16px;
-    padding:14px;margin-bottom:16px;
-  }
-  .form-card label{font-size:11px;font-weight:700;color:var(--muted);display:block;margin:8px 0 4px;}
-  .form-card input, .form-card select{
-    width:100%;border:1.3px solid var(--line);border-radius:10px;padding:10px 12px;
-    font-size:13.5px;font-family:inherit;outline:none;background:#FCFBF7;
-  }
-  .form-card input:focus{border-color:var(--orange);}
-  .btn-primary{
-    background:var(--ink);color:var(--cream);border:none;border-radius:12px;
-    padding:11px;font-weight:700;font-size:13.5px;width:100%;margin-top:12px;cursor:pointer;
-  }
-  .btn-row{display:flex;gap:8px;margin-top:10px;}
-  .btn-row .btn-primary{margin-top:0;}
-  .btn-ghost{
-    background:none;border:1.3px solid var(--ink);border-radius:12px;color:var(--ink);
-    padding:11px;font-weight:700;font-size:13.5px;width:100%;cursor:pointer;
   }
 
   /* ---------- Footer nav ---------- */
@@ -239,6 +301,19 @@
   .modal h3{margin:0 0 4px;font-size:17px;}
   .modal .close-x{position:absolute;top:14px;right:20px;background:none;border:none;font-size:18px;cursor:pointer;}
   .modal-wrap{position:relative;}
+  .form-card{
+    background:var(--card);border:1.3px solid var(--ink);border-radius:16px;
+    padding:14px;margin-bottom:16px;
+  }
+  .form-card label{font-size:11px;font-weight:700;color:var(--muted);display:block;margin:8px 0 4px;}
+  .form-card input{
+    width:100%;border:1.3px solid var(--line);border-radius:10px;padding:10px 12px;
+    font-size:13.5px;font-family:inherit;outline:none;background:#FCFBF7;
+  }
+  .btn-primary{
+    background:var(--ink);color:var(--cream);border:none;border-radius:12px;
+    padding:11px;font-weight:700;font-size:13.5px;width:100%;margin-top:12px;cursor:pointer;
+  }
 </style>
 </head>
 <body>
@@ -247,7 +322,7 @@
   <header class="topbar">
     <div class="brand">
       <h1>MUSIC APP</h1>
-      <span class="beta">BETA</span>
+      <span class="beta">Alhawari17</span>
     </div>
     <div class="avatar">🎧</div>
   </header>
@@ -263,13 +338,13 @@
   <section class="view active" id="view-home">
     <div class="player-card" id="playerCard">
       <span class="np-tag" id="npTag">NOW PLAYING</span>
-      <span class="playing-tag" id="playingTag" style="display:none">PLAYING</span>
+      <span class="playing-tag" id="playingTag">Pause</span>
       <div class="player-top">
-        <img class="cover" id="npCover" src="" alt="">
+        <div class="cover" id="npCover">♪</div>
         <div class="np-info">
-          <div class="label">SEDANG DIPUTAR</div>
-          <div class="np-title" id="npTitle">Belum ada lagu</div>
-          <div class="np-artist" id="npArtist">Tambahkan lagu di menu Pencarian</div>
+          <div class="label" id="activeCategoryLabel">KATEGORI: SEMUA LAGU</div>
+          <div class="np-title" id="npTitle">Memuat lagu...</div>
+          <div class="np-artist" id="npArtist">GitHub Repository</div>
           <div class="transport">
             <button id="btnPrev" title="Sebelumnya">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM20 6L9 12l11 6z"/></svg>
@@ -302,24 +377,28 @@
       </div>
     </div>
 
-    <div class="section-label">Antrean selanjutnya</div>
+    <!-- Posisi Kategori Musik -->
+    <div class="section-label" style="margin-top:0">Kategori Musik</div>
+    <div class="category-grid" id="categoryGrid">
+      <!-- Kartu Kategori dirender lewat JS -->
+    </div>
+
+    <div class="section-label" id="queueHeaderLabel">Antrean selanjutnya (Semua Lagu)</div>
     <div id="queueList"></div>
   </section>
 
   <!-- ===================== SEARCH / LIBRARY ===================== -->
   <section class="view" id="view-search">
-    <div class="searchbar" style="margin-bottom:6px">
+    <div class="searchbar" style="margin-bottom:12px">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input id="searchInput" placeholder="Cari judul lagu atau penyanyi…">
     </div>
 
-    <button class="addbtn" id="btnOpenAdd">+ Tambah lagu dari Google Drive</button>
+    <div class="section-label">🔥 Musik trending</div>
+    <div id="trendingList"></div>
 
     <div class="section-label">Semua lagu</div>
     <div id="allSongsList"></div>
-
-    <div class="section-label">🔥 Musik trending</div>
-    <div id="trendingList"></div>
   </section>
 
   <!-- ===================== PROFILE / PLAYLISTS ===================== -->
@@ -359,26 +438,6 @@
   <audio id="audio" preload="metadata"></audio>
   <div class="mini-toast" id="toast"></div>
 
-  <!-- Modal: add song -->
-  <div class="modal-bg" id="modalAdd">
-    <div class="modal-wrap">
-      <div class="modal">
-        <button class="close-x" onclick="closeModal('modalAdd')">✕</button>
-        <h3>Tambah lagu</h3>
-        <p style="font-size:12px;color:var(--muted);margin:4px 0 0">Pastikan file di Google Drive sudah di-share "Anyone with the link".</p>
-        <div class="form-card" style="box-shadow:none;border:none;padding:8px 0">
-          <label>Link share Google Drive</label>
-          <input id="fDriveLink" placeholder="https://drive.google.com/file/d/....">
-          <label>Judul lagu</label>
-          <input id="fTitle" placeholder="Contoh: Aurora">
-          <label>Nama penyanyi / band</label>
-          <input id="fArtist" placeholder="Contoh: Solara">
-          <button class="btn-primary" id="btnSaveSong">Simpan lagu</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Modal: new/rename playlist -->
   <div class="modal-bg" id="modalPlaylist">
     <div class="modal-wrap">
@@ -387,7 +446,7 @@
         <h3 id="plModalTitle">Playlist baru</h3>
         <div class="form-card" style="box-shadow:none;border:none;padding:8px 0">
           <label>Nama playlist</label>
-          <input id="fPlaylistName" placeholder="Contoh: Summer Vibes">
+          <input id="fPlaylistName" placeholder="Contoh: Lagu Santai">
           <button class="btn-primary" id="btnSavePlaylist">Simpan</button>
         </div>
       </div>
@@ -409,72 +468,102 @@
 
 <script>
 /* ============================================================
-   DATA LAYER — localStorage
-   songs: [{id,title,artist,driveId,plays}]
-   playlists: [{id,name,songIds:[]}]
+   DATA LAYER — GitHub Repository Integration
 ============================================================ */
-const LS_SONGS = 'ma_songs', LS_PL = 'ma_playlists', LS_STATE='ma_state';
+const LS_PL = 'ma_playlists', LS_PLAYS = 'ma_plays';
 
-function loadSongs(){ return JSON.parse(localStorage.getItem(LS_SONGS) || '[]'); }
-function saveSongs(s){ localStorage.setItem(LS_SONGS, JSON.stringify(s)); }
-function loadPlaylists(){ return JSON.parse(localStorage.getItem(LS_PL) || '[]'); }
-function savePlaylists(p){ localStorage.setItem(LS_PL, JSON.stringify(p)); }
+let playlists = JSON.parse(localStorage.getItem(LS_PL) || '[]');
+let playCounts = JSON.parse(localStorage.getItem(LS_PLAYS) || '{}');
 
-let songs = loadSongs();
-let playlists = loadPlaylists();
+// Daftar lagu diperbarui otomatis dari repository GitHub alhawari17/Musik (24 lagu)[cite: 16]
+const rawFiles = [
+  "1000X - Ghea Indrawari.mp3",
+  "Bentang Jarak Asmara - Man Osman ft. Traffic Jam.mp3",
+  "Berapa Kali Kita Akan Saling Memaafkan - Pamungkas.mp3",
+  "Berharap Pada Timur - Salma Salsabil.mp3",
+  "Bunga Hati - Salma Salsabil.mp3",
+  "Ceritanya Jatuh Cinta - Aku Jeje.mp3",
+  "Cha Cha Cha - Bruno Mars.mp3",
+  "Disarankan Di Bandung - Dongker Feat Jason Ranti.mp3",
+  "Everything U Are - Hindia.mp3",
+  "Hey Daddy - Daddys Home.mp3",
+  "Kita Buat Menyenangkan - Bernadya.mp3",
+  "Kita Lewati Berdua - Overnight.mp3",
+  "Kota Ini Tak Sama Tanpamu - Nadhif Basalamah.mp3",
+  "Masa ini Nanti dan Masa Indah Lainnya - Nuca.mp3",
+  "Nuh - Teruntuk Mia.mp3",
+  "One In A Million - NeYo - (Reggea Version).mp3",
+  "Putri Iklan - Keljo.mp3",
+  "Risk It All - Bruno Mars.mp3",
+  "Senja Sudut Kota - Samuel Cipta.mp3",
+  "Shape of My Heart - Backstreet Boys.mp3",
+  "So Easy (To Fall In Love) - Olivia Dean.mp3",
+  "The Fate of Ophelia - Taylor Swift.mp3",
+  "The One That Got Away - Katy Perry.mp3",
+  "Too Good At Goodbyes - Sam Smith.mp3"
+];
 
-// seed demo data first run
-if(songs.length === 0 && localStorage.getItem('ma_seeded') !== '1'){
-  songs = [
-    {id:cryptoId(), title:'Aurora', artist:'Solara', driveId:'', plays:9},
-    {id:cryptoId(), title:'Euphoria', artist:'Luna', driveId:'', plays:6},
-    {id:cryptoId(), title:'Summer Vibes', artist:'Sunara Wiat', driveId:'', plays:4},
-  ];
-  saveSongs(songs);
-  localStorage.setItem('ma_seeded','1');
-}
-
-function cryptoId(){ return 'id_' + Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
-
-function driveIdFromLink(link){
-  if(!link) return '';
-  link = link.trim();
-  let m = link.match(/\/d\/([a-zA-Z0-9_-]{10,})/) || link.match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
-  if(m) return m[1];
-  if(/^[a-zA-Z0-9_-]{10,}$/.test(link)) return link; // raw id pasted
-  return '';
-}
-function driveStreamUrl(driveId){
-  return `https://drive.google.com/uc?export=download&id=${driveId}`;
-}
+// Generate objek lagu secara dinamis dari nama file GitHub
+let songs = rawFiles.map((filename, index) => {
+  let cleanName = filename.replace(/\.mp3$/i, '');
+  let parts = cleanName.split(' - ');
+  let title = parts[0] ? parts[0].trim() : cleanName;
+  let artist = parts.slice(1).join(' - ').trim() || 'Unknown Artist';
+  
+  return {
+    id: 'git_' + index,
+    title: title,
+    artist: artist,
+    filename: filename,
+    url: `https://raw.githubusercontent.com/alhawari17/Musik/main/${encodeURIComponent(filename)}`,
+    plays: playCounts['git_' + index] || 0
+  };
+});
 
 /* ============================================================
    PLAYBACK STATE
 ============================================================ */
-let queue = [...songs];          // upcoming order
+let queue = [...songs];
 let currentIndex = 0;
 let shuffleOn = false;
 let repeatOn = false;
+let currentCategoryName = 'Semua Lagu';
 
 const audio = document.getElementById('audio');
 
 function currentSong(){ return queue[currentIndex]; }
 
-function buildQueueFromAll(startId){
-  queue = shuffleOn ? shuffleArray([...songs]) : [...songs];
-  if(startId){
-    const idx = queue.findIndex(s=>s.id===startId);
-    if(idx>-1){ const [s] = queue.splice(idx,1); queue.unshift(s); }
-  }
+function setQueueSource(newList, categoryName, autoPlayFirst = false){
+  queue = shuffleOn ? shuffleArray([...newList]) : [...newList];
   currentIndex = 0;
-}
-function shuffleArray(arr){
-  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
-  return arr;
+  currentCategoryName = categoryName;
+  updateCategoryLabels();
+  renderCategoryCards();
+  if(autoPlayFirst && queue.length > 0){
+    loadCurrent(true);
+  } else {
+    renderQueue();
+  }
 }
 
-function playSongById(id, list){
-  if(list) queue = [...list]; else buildQueueFromAll(id);
+function updateCategoryLabels(){
+  document.getElementById('activeCategoryLabel').textContent = 'KATEGORI: ' + currentCategoryName.toUpperCase();
+  document.getElementById('queueHeaderLabel').textContent = 'Antrean selanjutnya (' + currentCategoryName + ')';
+}
+
+function shuffleArray(arr){
+  let cloned = [...arr];
+  for(let i=cloned.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cloned[i],cloned[j]]=[cloned[j],cloned[i]]; }
+  return cloned;
+}
+
+function playSongById(id, list, categoryName){
+  if(list){
+    setQueueSource(list, categoryName || 'Custom');
+  } else if(queue.length === 0 || !queue.some(s => s.id === id)){
+    setQueueSource(songs, 'Semua Lagu');
+  }
+  
   const idx = queue.findIndex(s=>s.id===id);
   currentIndex = idx > -1 ? idx : 0;
   loadCurrent(true);
@@ -483,21 +572,17 @@ function playSongById(id, list){
 function loadCurrent(autoplay){
   const s = currentSong();
   if(!s){ renderNowPlaying(); return; }
-  const url = s.driveId ? driveStreamUrl(s.driveId) : '';
-  audio.src = url;
+  audio.src = s.url;
   renderNowPlaying();
   renderQueue();
   updateMediaSession();
-  if(autoplay && url){
-    audio.play().catch(()=>{ toast('Tidak bisa memutar — cek link Google Drive lagu ini.'); });
-  }
-  if(!url){
-    toast('Lagu ini belum punya sumber audio. Edit lagu untuk menambahkan link Drive.');
+  if(autoplay){
+    audio.play().catch(()=>toast('Tidak bisa memutar lagu. Periksa koneksi internet Anda.'));
   }
 }
 
 function togglePlay(){
-  if(!currentSong()){ toast('Belum ada lagu untuk diputar. Tambahkan lagu di menu Pencarian.'); return; }
+  if(!currentSong()) return;
   if(!audio.src){ loadCurrent(true); return; }
   if(audio.paused) audio.play().catch(()=>toast('Gagal memutar lagu ini.'));
   else audio.pause();
@@ -518,11 +603,25 @@ function playPrev(){
 function bumpPlayCount(s){
   if(!s) return;
   const t = songs.find(x=>x.id===s.id);
-  if(t){ t.plays = (t.plays||0)+1; saveSongs(songs); }
+  if(t){
+    t.plays = (t.plays||0)+1;
+    playCounts[t.id] = t.plays;
+    localStorage.setItem(LS_PLAYS, JSON.stringify(playCounts));
+  }
 }
 
-audio.addEventListener('play', ()=>{ setPlayIcon(true); document.getElementById('playingTag').style.display='inline-block'; });
-audio.addEventListener('pause', ()=>{ setPlayIcon(false); document.getElementById('playingTag').style.display='none'; });
+audio.addEventListener('play', ()=>{
+  setPlayIcon(true);
+  const tag = document.getElementById('playingTag');
+  tag.style.display = 'inline-block';
+  tag.textContent = 'Playing';
+});
+audio.addEventListener('pause', ()=>{
+  setPlayIcon(false);
+  const tag = document.getElementById('playingTag');
+  tag.style.display = 'inline-block';
+  tag.textContent = 'Pause';
+});
 audio.addEventListener('ended', ()=> playNext(false));
 audio.addEventListener('timeupdate', ()=>{
   if(!isFinite(audio.duration)) return;
@@ -546,8 +645,14 @@ document.getElementById('btnPrev').onclick = playPrev;
 document.getElementById('btnShuffle').onclick = ()=>{
   shuffleOn = !shuffleOn;
   document.getElementById('btnShuffle').classList.toggle('on', shuffleOn);
-  const id = currentSong()?.id;
-  buildQueueFromAll(id);
+  
+  let activeList = (currentCategoryName === 'Semua Lagu') ? songs : (playlists.find(p => p.name === currentCategoryName)?.songIds.map(sid => songs.find(s => s.id === sid)).filter(Boolean) || songs);
+  let currentId = currentSong()?.id;
+  setQueueSource(activeList, currentCategoryName);
+  if(currentId){
+    const idx = queue.findIndex(s => s.id === currentId);
+    if(idx > -1) currentIndex = idx;
+  }
   renderQueue();
   toast(shuffleOn ? 'Mode acak diaktifkan' : 'Mode acak dimatikan');
 };
@@ -557,13 +662,13 @@ document.getElementById('btnRepeat').onclick = ()=>{
   toast(repeatOn ? 'Ulangi lagu ini' : 'Ulangi dimatikan');
 };
 
-/* ---------- Media Session (lockscreen controls) ---------- */
+/* ---------- Media Session ---------- */
 function updateMediaSession(){
   if(!('mediaSession' in navigator)) return;
   const s = currentSong();
   if(!s) return;
   navigator.mediaSession.metadata = new MediaMetadata({
-    title: s.title, artist: s.artist, album: 'Music App',
+    title: s.title, artist: s.artist, album: 'GitHub Music App',
     artwork: [{src:'icon-192.png', sizes:'192x192', type:'image/png'}]
   });
   navigator.mediaSession.setActionHandler('play', ()=>audio.play());
@@ -575,37 +680,102 @@ function updateMediaSession(){
 /* ============================================================
    RENDERING
 ============================================================ */
+const playlistGradients = [
+  'linear-gradient(135deg, #F2603F, #c94324)', // Oranye
+  'linear-gradient(135deg, #7B68EE, #483D8B)', // Ungu/Indigo
+  'linear-gradient(135deg, #2E8B57, #006400)', // Hijau Tua
+  'linear-gradient(135deg, #FF69B4, #C71585)', // Pink/Magenta
+  'linear-gradient(135deg, #DAA520, #B8860B)', // Kuning Emas/Bronze
+  'linear-gradient(135deg, #008B8B, #005F5F)'  // Tosca/Cyan
+];
+
+function renderCategoryCards(){
+  const grid = document.getElementById('categoryGrid');
+  let html = '';
+
+  // Kumpulkan semua item kategori
+  let allCategories = [
+    { name: 'Semua Lagu', type: 'ALL', count: songs.length, bannerBg: 'linear-gradient(135deg,#3E4CA0,#20265e)', icon: '🎧' }
+  ];
+
+  playlists.forEach((p, idx) => {
+    let gradColor = playlistGradients[idx % playlistGradients.length];
+    allCategories.push({
+      name: p.name,
+      type: 'PLAYLIST',
+      count: p.songIds.length,
+      bannerBg: gradColor,
+      icon: '🎵'
+    });
+  });
+
+  // Urutkan kategori: Kategori yang aktif berada paling depan (paling kiri)
+  allCategories.sort((a, b) => {
+    if (a.name === currentCategoryName) return -1;
+    if (b.name === currentCategoryName) return 1;
+    return 0;
+  });
+
+  // Render HTML sesuai urutan yang sudah disesuaikan
+  allCategories.forEach(cat => {
+    const isActive = currentCategoryName === cat.name;
+    html += `
+      <div class="cat-card ${isActive ? 'active' : ''}" onclick="selectCategory('${esc(cat.name)}')">
+        <span class="cat-badge">${cat.type}</span>
+        <div class="cat-banner" style="background:${cat.bannerBg}">
+          ${cat.icon}
+        </div>
+        <div class="cat-info">
+          <div class="cat-title">${esc(cat.name)}</div>
+          <div class="cat-sub">${cat.count} ${cat.type === 'ALL' ? 'lagu tersedia' : 'lagu'}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  grid.innerHTML = html;
+}
+
+function selectCategory(name){
+  if(name === 'Semua Lagu'){
+    setQueueSource(songs, 'Semua Lagu', true);
+  } else {
+    const p = playlists.find(x => x.name === name);
+    if(p){
+      const list = p.songIds.map(sid => songs.find(s => s.id === sid)).filter(Boolean);
+      if(list.length === 0){
+        toast('Playlist ini masih kosong. Tambahkan lagu dari pencarian.');
+        return;
+      }
+      setQueueSource(list, p.name, true);
+    }
+  }
+}
+
 function renderNowPlaying(){
   const s = currentSong();
   document.getElementById('npTitle').textContent = s ? s.title : 'Belum ada lagu';
-  document.getElementById('npArtist').textContent = s ? s.artist : 'Tambahkan lagu di menu Pencarian';
-  document.getElementById('npCover').style.background = s ? coverGradient(s.id) : '';
-}
-function coverGradient(id){
-  const palettes = ['linear-gradient(160deg,#3E4CA0,#20265e)','linear-gradient(160deg,#F2603F,#c94324)','linear-gradient(160deg,#8FE0CE,#3f8f7c)','linear-gradient(160deg,#B7A6F2,#5c48b0)'];
-  let h=0; for(const c of id) h+=c.charCodeAt(0);
-  return palettes[h % palettes.length];
+  document.getElementById('npArtist').textContent = s ? s.artist : 'GitHub Repository';
 }
 
 function renderQueue(){
   const el = document.getElementById('queueList');
   const upcoming = queue.slice(currentIndex+1).concat(queue.slice(0,currentIndex));
-  if(songs.length===0){ el.innerHTML = emptyHint('Belum ada lagu. Tambahkan lewat menu Pencarian.'); return; }
-  if(upcoming.length===0){ el.innerHTML = emptyHint('Ini lagu terakhir di antrean.'); return; }
+  if(upcoming.length===0){ el.innerHTML = emptyHint('Antrean kosong.'); return; }
   el.innerHTML = upcoming.map(s=>songRowHtml(s, s.id===currentSong()?.id)).join('');
-  bindRowClicks(el, upcoming);
+  bindRowClicks(el, queue, currentCategoryName);
 }
 function emptyHint(text){ return `<div class="empty-hint">${text}</div>`; }
 
 function songRowHtml(s, active){
   return `<div class="song-row ${active?'active':''}" data-id="${s.id}">
-    <div class="row-thumb" style="background:${coverGradient(s.id)}">♪</div>
+    <div class="row-thumb">♪</div>
     <div class="row-mid">
       <div class="row-title">${esc(s.title)}</div>
       <div class="row-artist">${esc(s.artist)}</div>
     </div>
     <div class="row-right">
-      <button class="icon-btn star" data-plus="${s.id}" title="Tambah ke playlist">＋</button>
+      <button class="icon-btn" data-plus="${s.id}" title="Tambah ke playlist" style="font-size:16px;font-weight:bold">＋</button>
       <button class="icon-btn" data-play="${s.id}" title="Putar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 8.5v7l6-3.5z"/></svg>
       </button>
@@ -614,12 +784,12 @@ function songRowHtml(s, active){
 }
 function esc(t){ return (t||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-function bindRowClicks(container, list){
+function bindRowClicks(container, list, categoryName){
   container.querySelectorAll('[data-play]').forEach(b=>{
-    b.onclick = ()=> playSongById(b.dataset.play);
+    b.onclick = ()=> playSongById(b.dataset.play, list, categoryName);
   });
   container.querySelectorAll('.song-row').forEach(r=>{
-    r.onclick = (e)=>{ if(e.target.closest('button')) return; playSongById(r.dataset.id); };
+    r.onclick = (e)=>{ if(e.target.closest('button')) return; playSongById(r.dataset.id, list, categoryName); };
   });
   container.querySelectorAll('[data-plus]').forEach(b=>{
     b.onclick = (e)=>{ e.stopPropagation(); openPicker(b.dataset.plus); };
@@ -630,26 +800,25 @@ function renderAllSongs(filter){
   const el = document.getElementById('allSongsList');
   let list = songs;
   if(filter) list = songs.filter(s => (s.title+' '+s.artist).toLowerCase().includes(filter.toLowerCase()));
-  if(list.length===0){ el.innerHTML = emptyHint(filter ? 'Tidak ditemukan.' : 'Belum ada lagu. Ketuk "Tambah lagu" di atas.'); return; }
+  if(list.length===0){ el.innerHTML = emptyHint('Tidak ditemukan.'); return; }
   el.innerHTML = list.map(s=>songRowHtml(s, currentSong()?.id===s.id)).join('');
-  bindRowClicks(el, list);
+  bindRowClicks(el, songs, 'Semua Lagu');
 }
 
 function renderTrending(){
   const el = document.getElementById('trendingList');
   const top = [...songs].sort((a,b)=>(b.plays||0)-(a.plays||0)).slice(0,5);
-  if(top.length===0){ el.innerHTML = emptyHint('Belum ada data trending.'); return; }
   el.innerHTML = top.map((s,i)=>`
     <div class="trend-row" data-id="${s.id}">
       <div class="rank">${i+1}</div>
-      <div class="row-thumb" style="background:${coverGradient(s.id)}">♪</div>
+      <div class="row-thumb">♪</div>
       <div class="row-mid">
         <div class="row-title">${esc(s.title)}</div>
         <div class="row-artist">${esc(s.artist)}</div>
       </div>
       <div class="row-right"><span class="row-time">${s.plays||0}x diputar</span></div>
     </div>`).join('');
-  el.querySelectorAll('.trend-row').forEach(r=> r.onclick = ()=>playSongById(r.dataset.id));
+  el.querySelectorAll('.trend-row').forEach(r=> r.onclick = ()=>playSongById(r.dataset.id, songs, 'Semua Lagu'));
 }
 
 function renderPlaylists(){
@@ -675,15 +844,26 @@ function openPlaylistDetail(id){
   const list = p.songIds.map(sid=>songs.find(s=>s.id===sid)).filter(Boolean);
   const el = document.getElementById('pdSongs');
   if(list.length===0){ el.innerHTML = emptyHint('Playlist ini masih kosong.'); }
-  else { el.innerHTML = list.map(s=>songRowHtml(s, currentSong()?.id===s.id)).join(''); bindRowClicks(el, list); }
+  else { 
+    el.innerHTML = list.map(s=>songRowHtml(s, currentSong()?.id===s.id)).join(''); 
+    bindRowClicks(el, list, p.name); 
+  }
 }
 document.getElementById('pdBack').onclick = ()=>{ document.getElementById('playlistDetail').style.display='none'; openPlaylistId=null; };
 document.getElementById('pdDelete').onclick = ()=>{
   if(!openPlaylistId) return;
   if(confirm('Hapus playlist ini?')){
+    const deleted = playlists.find(p => p.id === openPlaylistId);
     playlists = playlists.filter(p=>p.id!==openPlaylistId);
-    savePlaylists(playlists);
+    localStorage.setItem(LS_PL, JSON.stringify(playlists));
     document.getElementById('playlistDetail').style.display='none';
+    
+    if(deleted && currentCategoryName === deleted.name){
+      setQueueSource(songs, 'Semua Lagu');
+    } else {
+      renderCategoryCards();
+    }
+    
     renderPlaylists();
     toast('Playlist dihapus');
   }
@@ -691,10 +871,21 @@ document.getElementById('pdDelete').onclick = ()=>{
 document.getElementById('pdEdit').onclick = ()=>{
   const p = playlists.find(x=>x.id===openPlaylistId);
   const name = prompt('Nama baru untuk playlist:', p.name);
-  if(name && name.trim()){ p.name = name.trim(); savePlaylists(playlists); openPlaylistDetail(p.id); renderPlaylists(); }
+  if(name && name.trim()){
+    const oldName = p.name;
+    p.name = name.trim();
+    localStorage.setItem(LS_PL, JSON.stringify(playlists));
+    if(currentCategoryName === oldName){
+      currentCategoryName = p.name;
+      updateCategoryLabels();
+    }
+    renderCategoryCards();
+    openPlaylistDetail(p.id);
+    renderPlaylists();
+  }
 };
 
-/* ---------- picker modal: add song to playlist ---------- */
+/* ---------- Picker Modal ---------- */
 let pickerSongId = null;
 function openPicker(songId){
   pickerSongId = songId;
@@ -711,8 +902,9 @@ function openPicker(songId){
       c.onclick = ()=>{
         const p = playlists.find(x=>x.id===c.dataset.id);
         if(!p.songIds.includes(pickerSongId)) p.songIds.push(pickerSongId);
-        savePlaylists(playlists);
+        localStorage.setItem(LS_PL, JSON.stringify(playlists));
         renderPlaylists();
+        renderCategoryCards();
         toast(`Ditambahkan ke "${p.name}"`);
         closeModal('modalPicker');
       };
@@ -729,39 +921,24 @@ function goto(tab){
   document.getElementById('view-'+tab).classList.add('active');
   document.querySelectorAll('nav.footer button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
   document.getElementById('topSearchWrap').style.display = tab==='search' ? 'none' : 'block';
-  if(tab==='search') document.getElementById('searchInput').focus({preventScroll:true});
-  if(tab==='search'){ renderAllSongs(document.getElementById('searchInput').value); renderTrending(); }
+  if(tab==='search') {
+    document.getElementById('searchInput').focus({preventScroll:true});
+    renderAllSongs(document.getElementById('searchInput').value);
+    renderTrending();
+  }
   if(tab==='profile') renderPlaylists();
-  if(tab==='home') renderQueue();
+  if(tab==='home') {
+    renderCategoryCards();
+    renderQueue();
+  }
 }
 
 document.getElementById('searchInput').addEventListener('input', e=> renderAllSongs(e.target.value));
 
-/* ---------- modals ---------- */
+/* ---------- Modals ---------- */
 function openModal(id){ document.getElementById(id).classList.add('show'); }
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 document.querySelectorAll('.modal-bg').forEach(m=> m.addEventListener('click', e=>{ if(e.target===m) closeModal(m.id); }));
-
-document.getElementById('btnOpenAdd').onclick = ()=>{
-  document.getElementById('fDriveLink').value='';
-  document.getElementById('fTitle').value='';
-  document.getElementById('fArtist').value='';
-  openModal('modalAdd');
-};
-document.getElementById('btnSaveSong').onclick = ()=>{
-  const link = document.getElementById('fDriveLink').value.trim();
-  const title = document.getElementById('fTitle').value.trim();
-  const artist = document.getElementById('fArtist').value.trim();
-  if(!title || !artist){ toast('Isi judul dan nama penyanyi dulu.'); return; }
-  const driveId = driveIdFromLink(link);
-  if(link && !driveId){ toast('Link Google Drive tidak valid.'); return; }
-  const s = {id:cryptoId(), title, artist, driveId, plays:0};
-  songs.push(s); saveSongs(songs);
-  closeModal('modalAdd');
-  renderAllSongs(''); renderTrending();
-  if(queue.length===0){ buildQueueFromAll(); renderQueue(); }
-  toast('Lagu ditambahkan');
-};
 
 document.getElementById('btnNewPlaylist').onclick = ()=>{
   document.getElementById('plModalTitle').textContent = 'Playlist baru';
@@ -771,14 +948,15 @@ document.getElementById('btnNewPlaylist').onclick = ()=>{
 document.getElementById('btnSavePlaylist').onclick = ()=>{
   const name = document.getElementById('fPlaylistName').value.trim();
   if(!name){ toast('Isi nama playlist dulu.'); return; }
-  playlists.push({id:cryptoId(), name, songIds:[]});
-  savePlaylists(playlists);
+  playlists.push({id:'pl_' + Date.now(), name, songIds:[]});
+  localStorage.setItem(LS_PL, JSON.stringify(playlists));
   closeModal('modalPlaylist');
   renderPlaylists();
+  renderCategoryCards();
   toast('Playlist dibuat');
 };
 
-/* ---------- toast ---------- */
+/* ---------- Toast ---------- */
 let toastTimer;
 function toast(msg){
   const t = document.getElementById('toast');
@@ -791,19 +969,12 @@ function toast(msg){
 /* ============================================================
    INIT
 ============================================================ */
-buildQueueFromAll();
+setQueueSource(songs, 'Semua Lagu');
 renderNowPlaying();
 renderQueue();
 renderAllSongs('');
 renderTrending();
 renderPlaylists();
-
-/* register service worker for installable PWA (helps background playback stability) */
-if('serviceWorker' in navigator){
-  window.addEventListener('load', ()=>{
-    navigator.serviceWorker.register('sw.js').catch(()=>{});
-  });
-}
 </script>
 </body>
 </html>
