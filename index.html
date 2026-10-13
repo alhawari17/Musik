@@ -24,7 +24,7 @@
     --radius: 20px;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+  html,body{margin:0;padding:0;overflow:hidden;}
   body{
     background:var(--cream);
     color:var(--ink);
@@ -35,15 +35,23 @@
   #app{
     max-width:480px;
     margin:0 auto;
-    min-height:100vh;
+    height:100vh;
     position:relative;
-    padding-bottom:92px;
     background:var(--cream);
+    display:flex;
+    flex-direction:column;
   }
-  /* ---------- Header ---------- */
+
+  /* ---------- Header (Fixed / Tidak Bisa Di-scroll) ---------- */
   header.topbar{
+    position:absolute;
+    top:0;left:0;right:0;
+    max-width:480px;
+    margin:0 auto;
+    z-index:40;
+    background:var(--cream);
     display:flex;align-items:center;justify-content:space-between;
-    padding:22px 18px 6px;
+    padding:22px 18px 12px;
   }
   .brand{display:flex;align-items:center;gap:8px;}
   .brand h1{
@@ -60,20 +68,38 @@
     border:2px solid var(--ink);
     font-size:18px;
   }
-  .searchwrap{padding:10px 18px 18px;}
+
+  /* ---------- Tampilan Kolom Pencarian (Sesuai Referensi Gambar) ---------- */
   .searchbar{
-    display:flex;align-items:center;gap:8px;
-    background:var(--card);border:1.5px solid var(--ink);
-    border-radius:24px;padding:10px 16px;
-    font-size:13px;color:var(--muted);
+    display:flex;align-items:center;gap:10px;
+    background:#FFFFFF;
+    border:1.3px solid #191919;
+    border-radius:999px;
+    padding:12px 18px;
+    font-size:14px;
+    color:#8B8577;
+    box-shadow: 0 2px 0 rgba(25,25,25,0.8);
   }
   .searchbar input{
     border:none;outline:none;background:transparent;flex:1;
     font-size:14px;color:var(--ink);font-family:inherit;
   }
-  .searchbar svg{flex-shrink:0;}
+  .searchbar input::placeholder{
+    color:#8B8577;
+  }
+  .searchbar svg{flex-shrink:0;color:#8B8577;}
 
-  section.view{padding:0 18px 8px;display:none;}
+  section.view{
+    flex:1;
+    overflow-y:auto;
+    padding:80px 18px 110px 18px;
+    display:none;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  section.view::-webkit-scrollbar {
+    display: none;
+  }
   section.view.active{display:block;}
 
   .section-label{
@@ -87,7 +113,7 @@
     gap: 16px;
     overflow-x: auto;
     padding-bottom: 8px;
-    padding-top: 6px;
+    padding-top: 14px;
     margin-bottom: 18px;
     margin-left: -18px;
     margin-right: -18px;
@@ -133,7 +159,7 @@
   }
   .cat-badge{
     position: absolute;
-    top: -10px;
+    top: -12px;
     left: 10px;
     background: var(--yellow);
     border: 1.5px solid var(--ink);
@@ -167,8 +193,13 @@
   /* ---------- Now playing hero card (Home) ---------- */
   .player-card{
     background:var(--card);border:1.5px solid var(--ink);
-    border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);
-    position:relative;margin-bottom:18px;
+    border-radius:var(--radius);
+    padding:18px 14px 14px;
+    box-shadow:var(--shadow);
+    position:relative;
+    margin-top:8px;
+    margin-bottom:18px;
+    overflow:visible;
   }
   .player-top{display:flex;gap:12px;}
   .cover{
@@ -178,16 +209,18 @@
     display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;
   }
   .np-tag{
-    position:absolute;top:-10px;left:10px;
+    position:absolute;top:-12px;left:10px;
     background:#F6E96B;border:1.5px solid var(--ink);
     font-size:10px;font-weight:800;padding:3px 8px;border-radius:8px;
     transform:rotate(-6deg);
+    z-index:3;
   }
   .playing-tag{
-    position:absolute;top:-10px;right:14px;
+    position:absolute;top:-12px;right:14px;
     background:var(--mint);border:1.5px solid var(--ink);
     font-size:10px;font-weight:800;padding:3px 10px;border-radius:10px;
     transform:rotate(4deg);
+    z-index:3;
   }
   .np-info{flex:1;min-width:0;padding-top:4px;}
   .np-info .label{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:2px;}
@@ -267,12 +300,13 @@
 
   /* ---------- Footer nav ---------- */
   nav.footer{
-    position:fixed;left:0;right:0;bottom:0;
+    position:absolute;left:0;right:0;bottom:0;
     max-width:480px;margin:0 auto;
     background:var(--ink);border-radius:22px 22px 0 0;
     display:flex;justify-content:space-around;align-items:center;
     padding:12px 10px calc(10px + env(safe-area-inset-bottom));
     box-shadow:0 -4px 14px rgba(0,0,0,0.12);
+    z-index:40;
   }
   nav.footer button{
     background:none;border:none;color:#9C9887;display:flex;flex-direction:column;
@@ -326,13 +360,6 @@
     </div>
     <div class="avatar">🎧</div>
   </header>
-
-  <div class="searchwrap" id="topSearchWrap">
-    <div class="searchbar" onclick="goto('search')" style="cursor:pointer">
-      <span id="topSearchLabel">Cari judul lagu atau penyanyi…</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    </div>
-  </div>
 
   <!-- ===================== HOME ===================== -->
   <section class="view active" id="view-home">
@@ -391,7 +418,7 @@
   <section class="view" id="view-search">
     <div class="searchbar" style="margin-bottom:12px">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="searchInput" placeholder="Cari judul lagu atau penyanyi…">
+      <input id="searchInput" placeholder="Cari judul lagu atau penyanyi...">
     </div>
 
     <div class="section-label">🔥 Musik trending</div>
@@ -411,9 +438,9 @@
       <div style="display:flex;align-items:center;justify-content:space-between">
         <div class="section-label" id="pdName" style="margin:0;font-size:15px;color:var(--ink)"></div>
         <div style="display:flex;gap:10px">
-          <button class="icon-btn" id="pdEdit" title="Ganti nama">✏️</button>
+          <button class="icon-btn" id="pdEdit" title="Ganti nama">📝</button>
           <button class="icon-btn" id="pdDelete" title="Hapus">🗑️</button>
-          <button class="icon-btn" id="pdBack" title="Kembali">✕</button>
+          <button class="icon-btn" id="pdBack" title="Kembali">✖</button>
         </div>
       </div>
       <div id="pdSongs" style="margin-top:10px"></div>
@@ -475,7 +502,7 @@ const LS_PL = 'ma_playlists', LS_PLAYS = 'ma_plays';
 let playlists = JSON.parse(localStorage.getItem(LS_PL) || '[]');
 let playCounts = JSON.parse(localStorage.getItem(LS_PLAYS) || '{}');
 
-// Daftar lagu diperbarui otomatis dari repository GitHub alhawari17/Musik (24 lagu)[cite: 16]
+// Daftar lagu diperbarui otomatis dari repository GitHub alhawari17/Musik
 const rawFiles = [
   "1000X - Ghea Indrawari.mp3",
   "Bentang Jarak Asmara - Man Osman ft. Traffic Jam.mp3",
@@ -487,6 +514,7 @@ const rawFiles = [
   "Disarankan Di Bandung - Dongker Feat Jason Ranti.mp3",
   "Everything U Are - Hindia.mp3",
   "Hey Daddy - Daddys Home.mp3",
+  "Iqro - Raim Laode.mp3",
   "Kita Buat Menyenangkan - Bernadya.mp3",
   "Kita Lewati Berdua - Overnight.mp3",
   "Kota Ini Tak Sama Tanpamu - Nadhif Basalamah.mp3",
@@ -498,6 +526,7 @@ const rawFiles = [
   "Senja Sudut Kota - Samuel Cipta.mp3",
   "Shape of My Heart - Backstreet Boys.mp3",
   "So Easy (To Fall In Love) - Olivia Dean.mp3",
+  "Teh Hijau - Tulus.mp3",
   "The Fate of Ophelia - Taylor Swift.mp3",
   "The One That Got Away - Katy Perry.mp3",
   "Too Good At Goodbyes - Sam Smith.mp3"
@@ -920,7 +949,6 @@ function goto(tab){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+tab).classList.add('active');
   document.querySelectorAll('nav.footer button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
-  document.getElementById('topSearchWrap').style.display = tab==='search' ? 'none' : 'block';
   if(tab==='search') {
     document.getElementById('searchInput').focus({preventScroll:true});
     renderAllSongs(document.getElementById('searchInput').value);
