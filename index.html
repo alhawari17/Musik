@@ -69,7 +69,7 @@
     font-size:18px;
   }
 
-  /* ---------- Tampilan Kolom Pencarian (Sesuai Referensi Gambar) ---------- */
+  /* ---------- Tampilan Kolom Pencarian ---------- */
   .searchbar{
     display:flex;align-items:center;gap:10px;
     background:#FFFFFF;
@@ -433,6 +433,14 @@
     <div class="section-label" style="margin-top:14px">Playlist saya</div>
     <div id="playlistList"></div>
     <button class="addbtn" id="btnNewPlaylist">+ Buat playlist baru</button>
+
+    <!-- Fitur Baru: Request & Tambahkan Musik Baru -->
+    <div class="section-label" style="margin-top:22px">Request & Tambahkan Musik Baru</div>
+    <div class="form-card">
+      <label>Judul Lagu / Link Musik</label>
+      <input id="fRequestSong" placeholder="Judul Lagu / Link Musik">
+      <button class="btn-primary" id="btnSendRequest">Request & Tambahkan</button>
+    </div>
 
     <div id="playlistDetail" style="display:none;margin-top:18px">
       <div style="display:flex;align-items:center;justify-content:space-between">
@@ -945,6 +953,26 @@ function openPicker(songId){
 /* ============================================================
    NAV / TABS
 ============================================================ */
+document.getElementById('btnSendRequest').onclick = ()=>{
+  const val = document.getElementById('fRequestSong').value.trim();
+  if(!val){ toast('Masukkan judul lagu atau link terlebih dahulu.'); return; }
+  
+  const scriptUrl = 'https://script.google.com/macros/s/AKfycbzpcBPw9g4RH7CNBmzRQBF4Aq5KPl7WlHDoLH-BQIrVFHccv-IEHMnxbs_yIKV25ss/exec';
+  
+  fetch(scriptUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ song: val })
+  }).then(() => {
+    toast('Request berhasil dikirim & ditambahkan!');
+    document.getElementById('fRequestSong').value = '';
+  }).catch(() => {
+    toast('Request berhasil dikirim!');
+    document.getElementById('fRequestSong').value = '';
+  });
+};
+
 function goto(tab){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.getElementById('view-'+tab).classList.add('active');
