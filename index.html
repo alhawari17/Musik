@@ -61,7 +61,7 @@ h2.hi{font-size:22px;margin:10px 0 2px;font-weight:900}
 #btnFav.on{color:#F06BC0}
 .bar-row{display:flex;align-items:center;gap:8px;margin-top:16px}
 .time{font-size:10.5px;color:var(--mut);width:34px;font-weight:700}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:5px;background:var(--line);outline:0}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;background:linear-gradient(to right,#8B6CF0 0,#B79CFF var(--p,0%),var(--line) var(--p,0%));outline:0}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--vi);border:3px solid #fff;box-shadow:0 2px 6px rgba(125,95,225,.5)}
 .ctrl{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding:0 6px}
 .ctrl button{background:none;border:0;cursor:pointer;color:var(--ink);display:flex;padding:6px}
@@ -301,7 +301,7 @@ function playSongById(id,list,name){
 }
 function loadCurrent(autoplay){
   const s=currentSong();if(!s){renderNowPlaying();return}
-  audio.src=s.url;
+  audio.src=s.url;setSeek(0);
   recent=[s.id,...recent.filter(x=>x!==s.id)].slice(0,8);SV(LS_REC,recent);
   renderNowPlaying();renderQueue();renderRecent();updateMediaSession();
   if(autoplay)audio.play().catch(()=>toast('Tidak bisa memutar lagu. Periksa koneksi internet.'));
@@ -329,16 +329,17 @@ function setPlayIcon(on){
   const d=on?'<rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/>':'<path d="M8 5v14l11-7z"/>';
   $('playIcon').innerHTML=d;$('miniIcon').innerHTML=d;$('disc').classList.toggle('spin',on);document.body.classList.toggle('playing',on);
 }
+function setSeek(v){const b=$('seekbar');b.value=v;b.style.setProperty('--p',v+'%')}
 const fmt=t=>{if(!isFinite(t))return'00:00';return String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0')};
 audio.addEventListener('play',()=>setPlayIcon(true));
 audio.addEventListener('pause',()=>setPlayIcon(false));
 audio.addEventListener('ended',()=>playNext(false));
 audio.addEventListener('timeupdate',()=>{
   if(!isFinite(audio.duration))return;
-  $('seekbar').value=(audio.currentTime/audio.duration*100)||0;
+  setSeek((audio.currentTime/audio.duration*100)||0);
   $('npCur').textContent=fmt(audio.currentTime);$('npDur').textContent=fmt(audio.duration);
 });
-$('seekbar').addEventListener('input',e=>{if(isFinite(audio.duration))audio.currentTime=e.target.value/100*audio.duration});
+$('seekbar').addEventListener('input',e=>{e.target.style.setProperty('--p',e.target.value+'%');if(isFinite(audio.duration))audio.currentTime=e.target.value/100*audio.duration});
 $('btnPlay').onclick=togglePlay;$('btnNext').onclick=()=>playNext(true);$('btnPrev').onclick=playPrev;
 $('miniPlay').onclick=e=>{e.stopPropagation();togglePlay()};
 $('mini').onclick=()=>goto('player');
