@@ -266,7 +266,8 @@ const rawFiles=[
 "Kita Buat Menyenangkan - Bernadya.mp3","Kita Lewati Berdua - Overnight.mp3","Kota Ini Tak Sama Tanpamu - Nadhif Basalamah.mp3",
 "Masa ini Nanti dan Masa Indah Lainnya - Nuca.mp3","Nuh - Teruntuk Mia.mp3","One In A Million - NeYo - (Reggea Version).mp3","Putri Iklan - Keljo.mp3",
 "Risk It All - Bruno Mars.mp3","Senja Sudut Kota - Samuel Cipta.mp3","Shape of My Heart - Backstreet Boys.mp3","So Easy (To Fall In Love) - Olivia Dean.mp3",
-"Teh Hijau - Tulus.mp3","The Fate of Ophelia - Taylor Swift.mp3","The One That Got Away - Katy Perry.mp3","Too Good At Goodbyes - Sam Smith.mp3"];
+"Teh Hijau - Tulus.mp3","The Fate of Ophelia - Taylor Swift.mp3","The One That Got Away - Katy Perry.mp3","Too Good At Goodbyes - Sam Smith.mp3",
+"The Cure - Olivia Rodrigo.mp3","Sebatas Mimpi - Angie Carvalho feat Yovie Widianto.mp3","Semoga Nanti - Aruma.mp3","Amnesia - Al Ghazali.mp3","Salah Apa Aku - Fajar Noor.mp3"];
 let songs=rawFiles.map((f,i)=>{const c=f.replace(/\.mp3$/i,''),p=c.split(' - ');
   return{id:'git_'+i,title:(p[0]||c).trim(),artist:p.slice(1).join(' - ').trim()||'Unknown Artist',
   url:'https://raw.githubusercontent.com/alhawari17/Musik/main/'+encodeURIComponent(f),plays:playCounts['git_'+i]||0}});
