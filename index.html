@@ -114,6 +114,12 @@ nav.footer .moon svg{width:42px;height:42px}
 .lyric{margin-top:26px;background:rgba(255,255,255,.85);border-radius:28px;padding:22px 20px 20px;box-shadow:var(--sh)}
 .lyric h4{margin:0 0 8px;font-size:23px;font-weight:900;letter-spacing:-.3px}
 .lyric p{margin:0;font-size:14px;line-height:1.55;color:var(--mut);font-weight:600}
+.tcard{width:132px;flex-shrink:0;cursor:pointer}
+.tcard .art{height:132px;border-radius:22px;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:var(--sh);position:relative}
+.tcard .art .i{width:46px;height:46px}
+.tcard .rk{position:absolute;top:8px;left:8px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--vi);font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.tcard b{display:block;font-size:13.5px;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcard small{display:block;font-size:11px;color:var(--mut);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .playing .brand svg{animation:spin 6s linear infinite}
 @media (prefers-reduced-motion:reduce){.disc,#splash svg,.brand svg{animation:none!important}}
 button:focus-visible,input:focus-visible{outline:3px solid var(--vi2);outline-offset:2px}
@@ -154,7 +160,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--vi2);outline-of
     <p class="sub">Temukan lagu favoritmu berikutnya.</p>
     <label class="searchbar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input id="searchInput" placeholder="Cari judul lagu atau penyanyi…"></label>
     <div class="lbl"><div><svg class="i " viewBox="0 0 24 24" style="color:var(--vi);margin-right:6px"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Musik trending</div><span>5 teratas</span></div>
-    <div id="trendingList"></div>
+    <div class="hs" id="trendingList"></div>
     <div class="lbl">Semua lagu</div>
     <div id="allSongsList"></div>
   </section>
@@ -252,7 +258,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--vi2);outline-of
 
 <script>
 const $=id=>document.getElementById(id);
-const P={note:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',heart:'<path d="M20.8 5.6a5.2 5.2 0 0 0-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 0 0-7.4 7.4L12 21.8l8.8-8.8a5.2 5.2 0 0 0 0-7.4z"/>',moon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>',plus:'<path d="M12 5v14M5 12h14"/>'};
+const P={note:'<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',heart:'<path d="M20.8 5.6a5.2 5.2 0 0 0-7.4 0L12 7l-1.4-1.4a5.2 5.2 0 0 0-7.4 7.4L12 21.8l8.8-8.8a5.2 5.2 0 0 0 0-7.4z"/>',moon:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>',plus:'<path d="M12 5v14M5 12h14"/>',dots:'<circle cx="12" cy="5" r="2" stroke="none"/><circle cx="12" cy="12" r="2" stroke="none"/><circle cx="12" cy="19" r="2" stroke="none"/>'};
 const I=(k,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24">${P[k]}</svg>`;
 const J=(k,d)=>JSON.parse(localStorage.getItem(k)||d), SV=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
 const LS_PL='ma_playlists',LS_PLAYS='ma_plays',LS_REC='ma_recent',LS_FAV='ma_fav';
@@ -271,6 +277,7 @@ const rawFiles=[
 let songs=rawFiles.map((f,i)=>{const c=f.replace(/\.mp3$/i,''),p=c.split(' - ');
   return{id:'git_'+i,title:(p[0]||c).trim(),artist:p.slice(1).join(' - ').trim()||'Unknown Artist',
   url:'https://raw.githubusercontent.com/alhawari17/Musik/main/'+encodeURIComponent(f),plays:playCounts['git_'+i]||0}});
+songs.sort((a,b)=>a.title.localeCompare(b.title,'id',{sensitivity:'base'}));
 const byId=id=>songs.find(s=>s.id===id);
 const G=['linear-gradient(135deg,#9D82F5,#C9A8FF)','linear-gradient(135deg,#F4A6E0,#C9A8FF)','linear-gradient(135deg,#8FB4FF,#C0A8FF)','linear-gradient(135deg,#FFB8D6,#F4A6E6)','linear-gradient(135deg,#6E5BD6,#9D82F5)','linear-gradient(135deg,#7FC9F5,#A9A2FF)'];
 const gr=id=>G[[...String(id)].reduce((a,c)=>a+c.charCodeAt(0),0)%G.length];
@@ -377,7 +384,7 @@ function songRow(s,active){
   return `<div class="song-row ${active?'active':''}" data-id="${s.id}">
   <div class="row-thumb" style="background:${gr(s.id)}">${I('note')}</div>
   <div class="row-mid"><div class="row-title">${esc(s.title)}</div><div class="row-artist">${esc(s.artist)}</div></div>
-  <div class="row-right"><button class="ib" data-plus="${s.id}" title="Tambah ke playlist">${I('plus')}</button><button class="ib" data-play="${s.id}" title="Putar"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button></div></div>`;
+  <div class="row-right"><button class="ib" data-plus="${s.id}" title="Tambah ke playlist">${I('dots','f')}</button></div></div>`;
 }
 function bindRows(el,list,name){
   el.querySelectorAll('[data-play]').forEach(b=>b.onclick=e=>{e.stopPropagation();playSongById(b.dataset.play,list,name)});
@@ -417,8 +424,8 @@ function renderAllSongs(f){
 }
 function renderTrending(){
   const el=$('trendingList'),top=[...songs].sort((a,b)=>(b.plays||0)-(a.plays||0)).slice(0,5);
-  el.innerHTML=top.map((s,i)=>`<div class="trend-row" data-id="${s.id}"><div class="rank">${i+1}</div><div class="row-thumb" style="background:${gr(s.id)}">${I('note')}</div><div class="row-mid"><div class="row-title">${esc(s.title)}</div><div class="row-artist">${esc(s.artist)}</div></div><div class="row-right">${s.plays||0}x</div></div>`).join('');
-  el.querySelectorAll('.trend-row').forEach(r=>r.onclick=()=>playSongById(r.dataset.id,songs,'Semua Lagu'));
+  el.innerHTML=top.map((s,i)=>`<div class="tcard" data-id="${s.id}"><div class="art" style="background:${G[i%G.length]}">${I('note')}</div><b>${esc(s.title)}</b><small>${esc(s.artist)}</small></div>`).join('');
+  el.querySelectorAll('.tcard').forEach(r=>r.onclick=()=>playSongById(r.dataset.id,songs,'Semua Lagu'));
 }
 function renderPlaylists(){
   const el=$('playlistList');renderFav();
@@ -458,10 +465,10 @@ $('pdEdit').onclick=()=>{
 };
 
 /* ---------- Picker & playlist baru ---------- */
-let pickerSongId=null;
+let pickerSongId=null,pendingSong=null;
 function openPicker(id){
   pickerSongId=id;const el=$('pickerList');
-  if(!playlists.length)el.innerHTML=emptyHint('Belum ada playlist. Buat dulu di Perpustakaan.');
+  if(!playlists.length)el.innerHTML=emptyHint('Belum ada playlist.');
   else{
     el.innerHTML=playlists.map((p,i)=>`<div class="pl-card" data-id="${p.id}"><div class="pl-icon" style="background:${G[(i+2)%G.length]}">${I('note')}</div><div><div class="pl-name">${esc(p.name)}</div><div class="pl-count">${p.songIds.length} lagu</div></div></div>`).join('');
     el.querySelectorAll('.pl-card').forEach(c=>c.onclick=()=>{
@@ -470,13 +477,15 @@ function openPicker(id){
       SV(LS_PL,playlists);renderPlaylists();renderCategoryCards();toast(`Ditambahkan ke "${p.name}"`);closeModal('modalPicker');
     });
   }
+  el.insertAdjacentHTML('beforeend','<button class="btn ghost" id="btnPickerNew">+ Buat playlist baru</button>');
+  $('btnPickerNew').onclick=()=>{pendingSong=pickerSongId;closeModal('modalPicker');$('fPlaylistName').value='';openModal('modalPlaylist');setTimeout(()=>$('fPlaylistName').focus(),60)};
   openModal('modalPicker');
 }
-$('btnNewPlaylist').onclick=()=>{$('fPlaylistName').value='';openModal('modalPlaylist')};
+$('btnNewPlaylist').onclick=()=>{pendingSong=null;$('fPlaylistName').value='';openModal('modalPlaylist')};
 $('btnSavePlaylist').onclick=()=>{
   const n=$('fPlaylistName').value.trim();if(!n){toast('Isi nama playlist dulu.');return}
-  playlists.push({id:'pl_'+Date.now(),name:n,songIds:[]});SV(LS_PL,playlists);
-  closeModal('modalPlaylist');renderPlaylists();renderCategoryCards();toast('Playlist dibuat');
+  playlists.push({id:'pl_'+Date.now(),name:n,songIds:pendingSong?[pendingSong]:[]});SV(LS_PL,playlists);
+  closeModal('modalPlaylist');renderPlaylists();renderCategoryCards();toast(pendingSong?`Ditambahkan ke "${n}"`:'Playlist dibuat');pendingSong=null;
 };
 
 /* ---------- Request musik ---------- */
